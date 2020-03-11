@@ -70,6 +70,7 @@ class App(QMainWindow, Ui_MainWindow):
         self.lineEdit.setText(self.options['path_to_tmp_files'])
         self.lineEdit_2.setText(self.options['login_file'])
         self.lineEdit_3.setText(self.options['proxie_file'])
+        self.lineEdit_4.textChanged.connect(self.changeSettings)
         self.action.triggered.connect(self.open_file_login)
         self.action_2.triggered.connect(self.open_file_proxie)
         self.action_3.triggered.connect(self.clearOptions)
@@ -80,6 +81,10 @@ class App(QMainWindow, Ui_MainWindow):
         for i in range(10):
             self.table.insertRow(Message(login="11", proxie="22", text="33", status=i))
         self.show()
+
+    def changeSettings(self):
+        text = self.lineEdit_4.text()
+        self.sorter_filter_table.setFilterFlags(list(map(int, filter(lambda x: len(x) >0, text.split(",")))))
 
     def saveOptions(self):
         with open(CONFIG_FILE, "w") as f:

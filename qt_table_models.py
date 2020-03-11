@@ -64,9 +64,13 @@ class MessagesModel(QAbstractTableModel):
 class MessageFilterSortProxy(QSortFilterProxyModel):
     def __init__(self, parent):
         super().__init__(parent)
-        self.filterFlags = [1, 5]
+        self.filterFlags = []
+
+    def setFilterFlags(self, flags):
+        if flags != self.filterFlags:
+            self.filterFlags = flags
+            self.invalidateFilter()
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
         model = self.sourceModel()
-        print("Trigger to filter")
-        return model.messages[sourceRow].status in self.filterFlags
+        return model.messages[sourceRow].status + 1 in self.filterFlags
